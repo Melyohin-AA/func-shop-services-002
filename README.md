@@ -26,6 +26,11 @@ Providers:
 
 `/api/search` is an endpoint of API for the [search service](#search).
 
+Supported methods:
+* `GET` - retrieves info about the products found at the providers by the passed article.
+
+##### GET
+
 Parameters:
 * `article` - an article to search by; string value; required parameter.
 * `exact` - a flag option to include only those products which article is the same as the specified one; `true` for true state and any other value for false state; optional parameter, false by default.
@@ -44,4 +49,4 @@ Normally returns JSON object which complies the following structure:
     * `price` (`string`, `null`) - price of the found product
     * `ref` (`string`, `null`) - link to the found product's page
 
-If no parameters are provided, redirects to `/search` endpoint.
+If no parameters are provided, redirects to `/search` endpoint (legacy behaviour).

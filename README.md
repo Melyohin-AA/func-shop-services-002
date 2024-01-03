@@ -37,7 +37,7 @@ Normally returns JSON object which complies the following structure:
   * `source` (`string`, `null`) - domain of the provider
   * `ref` (`string`, `null`) - link to a page with the search results of the provider
   * `error` (`string`, `null`) - error message
-  * `products` (`array` of `objects`) - collection of objects which contain search results within the provider; may be `null` if `error` is not `null`
+  * `products` (`array` of `objects`, `null`) - collection of objects which contain search results within the provider; may be `null` if `error` is not `null`
     * `article` (`string`, `null`) - real article of the found product
     * `title` (`string`, `null`) - title of the found product
     * `availability` (`string`, `null`) - the number of available units or other availability info

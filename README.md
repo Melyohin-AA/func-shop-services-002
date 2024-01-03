@@ -30,7 +30,7 @@ Parameters:
 * `article` - an article to search by; string value; required parameter.
 * `exact` - a flag option to include only those products which article is the same as the specified one; `true` for true state and any other value for false state; optional parameter, false by default.
 
-Normally returns JSON object which structure is:
+Normally returns JSON object which complies the following structure:
 * `formatVersion` (`integer`) - version of the structure; the current version is `2`
 * `scopes` (`array` of `objects`) - collection of objects which contain search results per each provider
   * `name` (`string`, `null`) - name of the provider

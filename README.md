@@ -1,11 +1,11 @@
 <div align="center">
-  <h2 align="center">func-shop-services-002</h2>
+  <h1 align="center">func-shop-services-002</h2>
   <p align="center">An Azure Function App for the one specific e-shop's needs</p>
 </div>
 
-### Services
+# Services
 
-#### Search
+## Search
 
 Search service allows to search for a product by its article agregating search results from several providers.
 
@@ -16,20 +16,20 @@ Providers:
 * `pilotmoto.ru`
 * `ktmzip.ru`
 
-### Endpoints
+# Endpoints
 
-#### /search
+## /search
 
 `/search` is an endpoint of GUI for the [search service](#search).
 
-#### /api/search
+## /api/search
 
 `/api/search` is an endpoint of API for the [search service](#search).
 
 Supported methods:
 * `GET` - retrieves info about the products found at the providers by the passed article.
 
-##### GET
+### GET
 
 Parameters:
 * `article` - an article to search by; string value; required parameter.

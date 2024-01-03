@@ -31,29 +31,17 @@ Parameters:
 * `exact` - a flag option to include only those products which article is the same as the specified one; `true` for true state and any other value for false state; optional parameter, false by default.
 
 Normally returns JSON object which structure is:
-```json
-{
-	"formatVersion": 2, // Version of the structure
-	"scopes": [
-		{ // Search results from one provider
-			"name": "Name of the provider",
-			"source": "Domain of the provider",
-			"ref": "Link to a page with the search results of the provider",
-			"error": null, // May include error string
-			"products": [ // May be `null` if `error` is not `null`
-				{ // Single search result
-					"article": "Real article of the found product", // Optional
-					"title": "Title of the found product", // Optional
-					"availability": "The number of available units or other availability info", // Optional
-					"price": "Price of the found product", // Optional
-					"ref": "Link to the found product's page", // Optional
-				},
-				// ...
-			],
-		},
-		// ...
-	],
-}
-```
+* `formatVersion` (`integer`) - version of the structure; the current version is `2`
+* `scopes` (`array` of `objects`) - collection of objects which contain search results per each provider
+  * `name` (`string`, `null`) - name of the provider
+  * `source` (`string`, `null`) - domain of the provider
+  * `ref` (`string`, `null`) - link to a page with the search results of the provider
+  * `error` (`string`, `null`) - error message
+  * `products` (`array` of `objects`) - collection of objects which contain search results within the provider; may be `null` if `error` is not `null`
+    * `article` (`string`, `null`) - real article of the found product
+    * `title` (`string`, `null`) - title of the found product
+    * `availability` (`string`, `null`) - the number of available units or other availability info
+    * `price` (`string`, `null`) - price of the found product
+    * `ref` (`string`, `null`) - link to the found product's page
 
 If no parameters are provided, redirects to `/search` endpoint.

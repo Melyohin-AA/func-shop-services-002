@@ -16,20 +16,20 @@ Providers:
 * `pilotmoto.ru`
 * `ktmzip.ru`
 
-# Endpoints
+### Endpoints
 
-## /search
+#### /search
 
-`/search` is an endpoint of GUI for the [search service](#search).
+`/search` is an endpoint of GUI for the search service.
 
-## /api/search
+#### /api/search
 
-`/api/search` is an endpoint of API for the [search service](#search).
+`/api/search` is an endpoint of API for the search service.
 
 Supported methods:
 * `GET` - retrieves info about the products found at the providers by the passed article.
 
-### GET
+##### GET
 
 Parameters:
 * `article` - an article to search by; string value; required parameter.

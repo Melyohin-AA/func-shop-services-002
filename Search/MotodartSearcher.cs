@@ -11,7 +11,7 @@ namespace ShopServices.Functions.Search;
 public class MotodartSearcher : ProductCardSearcherSearcher
 {
 	public override string Source => "motodart.ru";
-	public override string Name => "motodart.ru"; //~ rename
+	public override string Name => "motodart.ru";
 
 	public MotodartSearcher(string article, bool exactArticle, ILogger logger) :
 		base(article, exactArticle, logger) { }
@@ -63,6 +63,13 @@ public class MotodartSearcher : ProductCardSearcherSearcher
 		var doc = new HtmlDocument();
 		doc.Load(await content.ReadAsStreamAsync());
 		HtmlNode root = doc.DocumentNode;
+		product.Availability = GetAvailabilityFromProductCard(root);
+		product.Completed = true;
+		return product;
+	}
+
+	private static string GetAvailabilityFromProductCard(HtmlNode root)
+	{
 		HtmlNodeCollection stockCountNodes = root.SelectNodes("//div[contains(@class,'stock-div')]");
 		if (stockCountNodes != null)
 		{
@@ -71,11 +78,16 @@ public class MotodartSearcher : ProductCardSearcherSearcher
 			{
 				string count = stockCountNode.SelectSingleNode(".//span")?.InnerText;
 				string name = stockCountNode.SelectSingleNode(".//div[contains(@class,'stock-name')]")?.InnerText;
+				if (name != null)
+				{
+					int firstWordEnd = name.IndexOf(' ', 3); // offset 3 to skip ' - '
+					if (firstWordEnd != -1)
+						name = name.Remove(firstWordEnd) + "…";
+				}
 				stockCounts.Add(count + name);
 			}
-			product.Availability = string.Join("; ", stockCounts);
+			return string.Join("; ", stockCounts);
 		}
-		product.Completed = true;
-		return product;
+		return null;
 	}
 }

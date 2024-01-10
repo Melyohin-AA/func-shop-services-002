@@ -1,3 +1,7 @@
+# d0004 - 2024-01-10
+* Search service:
+  * Shorten availability field content for `motodart.ru` provider
+
 # d0003 - 2024-01-10
 * Search service:
   * Added support of `motodart.ru` provider

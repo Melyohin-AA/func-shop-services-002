@@ -3,6 +3,8 @@
   <p align="center">An Azure Function App for the one specific e-shop's needs</p>
 </div>
 
+Current tasks: https://docs.google.com/spreadsheets/d/15q-sjOsu0wgkCtnZ0fMapuC013Fy_olsk4irZE5OTz8/edit?usp=sharing
+
 # Services
 
 ## Search

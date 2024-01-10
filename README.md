@@ -15,6 +15,7 @@ Providers:
 * `mr-moto.ru`
 * `pilotmoto.ru`
 * `ktmzip.ru`
+* `motodart.ru`
 
 ### Endpoints
 

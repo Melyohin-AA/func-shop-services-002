@@ -15,6 +15,7 @@ public static class SearchManager
 			new MrMotoSearcher(article, exactArticle, logger),
 			new PilotMotoSearcher(article, exactArticle, logger),
 			new KtmZipSearcher(article, exactArticle, logger),
+			new MotodartSearcher(article, exactArticle, logger),
 		};
 		try
 		{

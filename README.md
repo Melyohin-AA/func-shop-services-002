@@ -1,6 +1,6 @@
 <div align="center">
   <h1 align="center">func-shop-services-002</h2>
-  <p align="center">An Azure Function App for the one specific e-shop's needs</p>
+  <p align="center">Azure Function App for the one specific e-shop's needs</p>
 </div>
 
 Current tasks: https://docs.google.com/spreadsheets/d/15q-sjOsu0wgkCtnZ0fMapuC013Fy_olsk4irZE5OTz8/edit?usp=sharing
@@ -9,7 +9,7 @@ Current tasks: https://docs.google.com/spreadsheets/d/15q-sjOsu0wgkCtnZ0fMapuC01
 
 ## Search
 
-Search service allows to search for a product by its article agregating search results from several providers.
+Search service allows to search for a product by its article aggregating search results from several providers.
 
 Providers:
 * `kkkk-parts.ru`

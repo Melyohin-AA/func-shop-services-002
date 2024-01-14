@@ -1,3 +1,7 @@
+# d0005 - 2024-01-14
+* Search service:
+  * Added partial support of `moto-falcon.ru` provider (`exact` flag's state is ignored; all search results are returned).
+
 # d0004 - 2024-01-10
 * Search service:
   * Shorten availability field content for `motodart.ru` provider

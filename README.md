@@ -18,6 +18,7 @@ Providers:
 * `pilotmoto.ru`
 * `ktmzip.ru`
 * `motodart.ru`
+* `moto-falcon.ru`
 
 ### Endpoints
 

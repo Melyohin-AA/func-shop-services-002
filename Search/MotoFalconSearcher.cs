@@ -16,7 +16,7 @@ public class MotoFalconSearcher : Searcher
 	private readonly Uri searchUri;
 
 	public override string Source => "moto-falcon.ru";
-	public override string Name => "moto-falcon.ru";
+	public override string Name => "Falcon";
 
 	public MotoFalconSearcher(string article, bool exactArticle, ILogger logger) :
 		base(article, exactArticle, logger)

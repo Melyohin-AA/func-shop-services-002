@@ -1,3 +1,7 @@
+# d0006 - 2024-01-14
+* Search service:
+  * Renamed `moto-falcon.ru` provider at search page to **Falcon**.
+
 # d0005 - 2024-01-14
 * Search service:
   * Added partial support of `moto-falcon.ru` provider (`exact` flag's state is ignored; all search results are returned).

@@ -4,10 +4,11 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using HtmlAgilityPack;
+using ShopServices.Search.Models;
 
-namespace ShopServices.Functions.Search;
+namespace ShopServices.Search.Searchers;
 
-public abstract class ProductCardSearcherSearcher : Searcher
+internal abstract class ProductCardSearcherSearcher : Searcher
 {
 	protected Uri SearchUri { get; }
 

@@ -2,10 +2,12 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using ShopServices.Search.Models;
+using ShopServices.Search.Searchers;
 
-namespace ShopServices.Functions.Search;
+namespace ShopServices.Search;
 
-public static class SearchManager
+internal static class SearchManager
 {
 	public static async Task<string> Search(string article, bool exactArticle, ILogger logger)
 	{
@@ -20,8 +22,8 @@ public static class SearchManager
 		};
 		try
 		{
-			Searcher.Scope[] scopes = await Task.WhenAll(searchers.Select(s => s.Search()));
-			var result = new Searcher.Result(scopes);
+			Scope[] scopes = await Task.WhenAll(searchers.Select(s => s.Search()));
+			var result = new Result(scopes);
 			return result.ToJson().ToString(Newtonsoft.Json.Formatting.None);
 		}
 		catch (Exception e)

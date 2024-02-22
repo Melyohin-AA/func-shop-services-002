@@ -5,10 +5,11 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using HtmlAgilityPack;
 using System.Collections.Generic;
+using ShopServices.Search.Models;
 
-namespace ShopServices.Functions.Search;
+namespace ShopServices.Search.Searchers;
 
-public class MrMotoSearcher : ProductCardSearcherSearcher
+internal class MrMotoSearcher : ProductCardSearcherSearcher
 {
 	public override string Source => "mr-moto.ru";
 	public override string Name => "MrMoto";

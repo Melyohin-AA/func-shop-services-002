@@ -5,16 +5,17 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
+using ShopServices.Search;
 
-namespace ShopServices.Functions;
+namespace ShopServices.Triggers;
 
-public static class HttpSearchEP
+internal static class SearchTrigger
 {
-	[FunctionName(nameof(HttpSearchEP))]
+	[FunctionName(nameof(SearchTrigger))]
 	public static Task<IActionResult> Run(
 		[HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "search")] HttpRequest request,
 		ILogger logger)
 	{
-		return Task.FromResult(SearchGUI.Get());
+		return Task.FromResult(SearchGui.Get());
 	}
 }

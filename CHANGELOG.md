@@ -1,3 +1,7 @@
+# d0007 - 2024-02-22
+* Search service:
+  * Added search result history feature.
+
 # d0006 - 2024-01-14
 * Search service:
   * Renamed `moto-falcon.ru` provider at search page to **Falcon**.

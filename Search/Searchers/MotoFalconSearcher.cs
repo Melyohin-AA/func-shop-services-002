@@ -5,13 +5,14 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using HtmlAgilityPack;
 using System.Collections.Generic;
+using ShopServices.Search.Models;
 
-namespace ShopServices.Functions.Search;
+namespace ShopServices.Search.Searchers;
 
 /// <remarks>
 /// Note: <c>MotoFalconSearcher</c> ignores <c>exactArticle</c> flag state and returns all search results (up to 8).
 /// </remarks>
-public class MotoFalconSearcher : Searcher
+internal class MotoFalconSearcher : Searcher
 {
 	private readonly Uri searchUri;
 

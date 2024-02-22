@@ -5,10 +5,11 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using HtmlAgilityPack;
 using System.Collections.Generic;
+using ShopServices.Search.Models;
 
-namespace ShopServices.Functions.Search;
+namespace ShopServices.Search.Searchers;
 
-public class KtmZipSearcher : ProductCardSearcherSearcher
+internal class KtmZipSearcher : ProductCardSearcherSearcher
 {
 	public override string Source => "ktmzip.ru";
 	public override string Name => "ktmzip";

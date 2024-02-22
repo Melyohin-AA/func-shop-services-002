@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+	<meta charset='UTF-8'>
+	<title>Search - ShopServices</title>
+</head>
+
+<body onload='refreshResultSavesArea()'>
+	<button type='button' onclick='onResultSavesRefreshClick()'>⟳</button>
+	<font size='4'><label>Сохранённые результаты поиска</label></font>
+	<div id='resultSavesArea'></div>
+	<hr/>
+	<button id='searchButton' type='button' onclick='onSearchButtonClick()'>Поиск</button>
+	<input id='articleInput' type='text' placeholder='артикул' autofocus onkeydown='if (event.keyCode == 13) onSearchButtonClick()'/>
+	<br/>
+	<label for='exactInput'>Строгий поиск</label>
+	<input id='exactInput' type='checkbox' checked/>
+	<br/>
+	<hr/>
+	<font id='resultArea' size='4'></font>
+</body>
+
+<script>
+	const SUPPORTED_FORMAT_VERSION = 1;
+	const SUPPORTED_RESULT_SAVE_VERSION = 1;
+	const SEARCH_HISTORY_LIMIT = 10;
+
+	function onSearchButtonClick() {
+		if (searchButton.disabled) return;
+		let article = articleInput.value.trim();
+		if (article.length == 0) {
+			alert('Поле `Артикул` является обязательным');
+			return;
+		}
+		search(article, exactInput.checked);
+	}
+
+	function search(article, exact) {
+		searchButton.disabled = true;
+		clearResultArea();
+		let query = formQuery(article, exact);
+		let url = `/api/search?${query}`;
+		fetch(url).then((response) => {
+			if (response.status !== 200) {
+				console.log(`Failed to fetch, code '${response.status}'`);
+				showSearchFailure();
+				return;
+			}
+			console.log('Fetched successfully');
+			response.json().then((result) => {
+				console.log(result);
+				saveSearchResult(result, article, exact);
+				displayResult(result);
+				refreshResultSavesArea();
+				searchButton.disabled = false;
+			}).catch((error) => {
+				console.log('Failed to parse response:', error);
+				showSearchFailure();
+			});
+		}).catch((error) => {
+			console.log('Failed to fetch:', error);
+			showSearchFailure();
+		});
+	}
+
+	function formQuery(article, exact) {
+		let params = {
+			article: article,
+			exact: exact,
+		};
+		return new URLSearchParams(params).toString();
+	}
+
+	function displayResult(result) {
+		let formatVersion = result.formatVersion;
+		if (formatVersion != SUPPORTED_FORMAT_VERSION) {
+			console.log(`Unexpected format version: expected '${SUPPORTED_FORMAT_VERSION}', actual is '${formatVersion}'`);
+			alert('Загруженная версия страницы больше не поддерживается. Страница будет обновлена при закрытии данного сообщения');
+			location.reload();
+			return;
+		}
+		updateResultTable(result.scopes);
+	}
+
+	function clearResultArea() {
+		resultArea.innerHTML = null;
+	}
+
+	function updateResultTable(scopes) {
+		for (let i = 0; i < scopes.length; i++) {
+			let scope = scopes[i];
+			addScopeTitle(scope);
+			if (scope.error == null) {
+				addScopeTable(scope);
+			} else {
+				addScopeError(scope);
+			}
+		}
+	}
+
+	function addScopeTitle(scope) {
+		resultArea.appendChild(document.createElement('br'));
+		let scopeCapElem = document.createElement('div');
+		scopeCapElem.innerHTML = `<font size='6' color='green'><b>${scope['name']}</b></font>`;
+		let ref = scope['ref'];
+		if (ref != null) {
+			let searchRefElem = document.createElement('a');
+			searchRefElem.setAttribute('href', ref);
+			searchRefElem.innerHTML = ref;
+			scopeCapElem.innerHTML += '&nbsp';
+			scopeCapElem.appendChild(searchRefElem);
+		}
+		resultArea.appendChild(scopeCapElem);
+	}
+
+	function addScopeTable(scope) {
+		let tableElem = document.createElement('table');
+		tableElem.setAttribute('border', '1');
+		tableElem.insertRow(0).innerHTML = '<th>Артикул</th><th>Наименование</th><th>Наличие</th><th>Цена</th><th>Ссылка на товар</th>';
+		let products = scope['products'];
+		for (let i = 0; i < products.length; i++) {
+			let product = products[i];
+			let row = tableElem.insertRow(-1);
+			['article', 'title', 'availability', 'price'].forEach((key) => row.insertCell(-1).innerHTML = product[key]);
+			let refCell = row.insertCell(-1);
+			let ref = product['ref'];
+			if (ref != null) {
+				let refElem = document.createElement('a');
+				refElem.setAttribute('href', ref);
+				refElem.innerHTML = 'ссылка';
+				refCell.appendChild(refElem);
+			}
+		}
+		resultArea.appendChild(tableElem);
+	}
+
+	function addScopeError(scope) {
+		let errorElem = document.createElement('p');
+		errorElem.innerHTML = `<b>Ошибка: </b>${scope.error}`;
+		resultArea.appendChild(errorElem);
+	}
+
+	function showSearchFailure() {
+		alert('Поиск не удался');
+		searchButton.disabled = false;
+	}
+
+	function onResultSavesRefreshClick() {
+		refreshResultSavesArea();
+	}
+
+	function refreshResultSavesArea() {
+		resultSavesArea.innerHTML = null;
+		let searchResultList = loadSearchResultList();
+		let now = Date.now();
+		let tableElem = document.createElement('table');
+		tableElem.setAttribute('border', '1');
+		tableElem.insertRow(0).innerHTML = '<th>Давность</th><th>Артикул</th><th>Точный поиск</th><th>Загрузка</th>';
+		for (let i = 0; i < searchResultList.length; i++) {
+			let srLog = searchResultList[i];
+			if (srLog.version != SUPPORTED_RESULT_SAVE_VERSION) continue;
+			let row = tableElem.insertRow(-1);
+			let ageMinutes = Math.floor((now - srLog.ts) / 60000);
+			row.insertCell(-1).innerHTML = `${ageMinutes} мин`;
+			row.insertCell(-1).innerHTML = srLog.article;
+			row.insertCell(-1).innerHTML = srLog.exact ? 'Да' : 'Нет';
+			row.insertCell(-1).innerHTML = `<button type='button' onclick='onResultSaveLoadClick(${srLog.ts})'>Загрузить</button>`;
+		}
+		resultSavesArea.appendChild(tableElem);
+	}
+
+	function onResultSaveLoadClick(ts) {
+		let resultSaveKey = getResultSaveKey(ts);
+		let result = loadSearchResult(resultSaveKey);
+		if (result != null) {
+			clearResultArea();
+			displayResult(result);
+		} else {
+			console.log(`Failed to load '${resultSaveKey}' result save`);
+			alert('Не получилось загрузить сохранённый результат поиска');
+		}
+	}
+
+	function getResultSaveKey(ts) {
+		return `resultSave[${ts}]`;
+	}
+
+	function saveSearchResult(result, article, exact) {
+		let now = Date.now();
+		let resultSaveKey = getResultSaveKey(now);
+		localStorage.setItem(resultSaveKey, JSON.stringify(result));
+		let resultSaves = loadSearchResultList();
+		if (resultSaves.length >= SEARCH_HISTORY_LIMIT) {
+			let toBeDeleted = resultSaves.splice(0, resultSaves.length - SEARCH_HISTORY_LIMIT + 1);
+			for (let i = 0; i < toBeDeleted.length; i++) {
+				localStorage.removeItem(getResultSaveKey(toBeDeleted[i].ts));
+			}
+		}
+		resultSaves.push({
+			version: SUPPORTED_RESULT_SAVE_VERSION,
+			ts: now,
+			article: article,
+			exact: exact,
+		});
+		saveSearchResultList(resultSaves);
+	}
+
+	function loadSearchResult(key) {
+		let resultSave = localStorage.getItem(key);
+		return (resultSave != null) ? JSON.parse(resultSave) : null;
+	}
+
+	function saveSearchResultList(resultSaves) {
+		localStorage.setItem('resultSaves', JSON.stringify(resultSaves));
+	}
+
+	function loadSearchResultList() {
+		let resultSaves = localStorage.getItem('resultSaves');
+		return (resultSaves != null) ? JSON.parse(resultSaves) : [];
+	}
+</script>
+
+</html>

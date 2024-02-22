@@ -5,10 +5,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
+using ShopServices.Search.Models;
 
-namespace ShopServices.Functions.Search;
+namespace ShopServices.Search.Searchers;
 
-public class BikelandSearcher : Searcher
+internal class BikelandSearcher : Searcher
 {
 	public override string Source => "bikeland.ru";
 	public override string Name => "BikeLand";

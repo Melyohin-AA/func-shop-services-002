@@ -6,13 +6,13 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
-using ShopServices.Functions.Search;
+using ShopServices.Search;
 
-namespace ShopServices.Functions;
+namespace ShopServices.Triggers;
 
-public static class HttpSearchApiEP
+internal static class SearchApiTrigger
 {
-	[FunctionName(nameof(HttpSearchApiEP))]
+	[FunctionName(nameof(SearchApiTrigger))]
 	public static async Task<IActionResult> Run(
 		[HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "api/search")] HttpRequest request,
 		ILogger logger)
